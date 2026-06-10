@@ -13,6 +13,7 @@ import {
   Building2, 
   Users
 } from "lucide-react";
+import NotificationCenter from "@/components/NotificationCenter";
 
 // Mock data to ensure the UI is rich and fully styled out of the box
 const MOCK_CATEGORIES = [
@@ -118,6 +119,7 @@ export default function LandingPage() {
 
         {/* Action Button */}
         <div className="flex items-center gap-4">
+          <NotificationCenter />
           <Link href="/login" className="button-secondary h-10 px-4 text-sm font-semibold rounded-full border border-hairline hover:border-ink">
             Log In
           </Link>
