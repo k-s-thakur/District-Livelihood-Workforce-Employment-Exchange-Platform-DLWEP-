@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ff385c;
+  --color-primary-active: #e00b41;
+  --color-primary-disabled: #ffd1da;
+  --color-ink: #222222;
+  --color-body: #3f3f3f;
+  --color-muted: #6a6a6a;
+  --color-muted-soft: #929292;
+  --color-hairline: #dddddd;
+  --color-hairline-soft: #ebebeb;
+  --color-border-strong: #c1c1c1;
+  --color-canvas: #ffffff;
+  --color-surface-soft: #f7f7f7;
+  --color-surface-card: #ffffff;
+  --color-surface-strong: #f2f2f2;
+  --color-on-primary: #ffffff;
+  
+  --font-sans: 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #222222;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Components & Utilities */
+.airbnb-shadow {
+  box-shadow: rgba(0, 0, 0, 0.02) 0 0 0 1px, rgba(0, 0, 0, 0.04) 0 2px 6px 0, rgba(0, 0, 0, 0.1) 0 4px 8px 0;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  height: 48px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-active);
+}
+
+.button-primary:disabled {
+  background-color: var(--color-primary-disabled);
+  cursor: not-allowed;
+}
+
+.button-secondary {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  height: 48px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.button-secondary:hover {
+  background-color: var(--color-surface-soft);
+}
+
+.text-input-field {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  height: 56px;
+  padding: 20px 12px 6px 12px;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  transition: border-width 0.1s ease, border-color 0.1s ease;
+}
+
+.text-input-field:focus {
+  border: 2px solid var(--color-ink);
+  padding: 19px 11px 5px 11px;
+}
