@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useNotificationStore } from "@/lib/notificationStore";
+import { SERVICE_NAMES } from "@/lib/services";
 import { 
   Award, 
   MapPin, 
@@ -228,11 +229,9 @@ export default function ContractorDashboard() {
                       onChange={(e) => setFormSkill(e.target.value)}
                       className="w-full bg-canvas text-ink border border-hairline rounded-sm pt-8 pb-3 px-3 outline-none focus:border-2 focus:border-ink transition-all text-xs font-semibold appearance-none"
                     >
-                      <option value="Welder">Welder</option>
-                      <option value="Electrician">Electrician</option>
-                      <option value="Mason / Builder">Mason / Builder</option>
-                      <option value="Driver">Driver</option>
-                      <option value="Carpenter">Carpenter</option>
+                      {SERVICE_NAMES.map((service) => (
+                        <option key={service} value={service}>{service}</option>
+                      ))}
                     </select>
                   </div>
 

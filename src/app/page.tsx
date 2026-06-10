@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabaseClient";
+import { SERVICE_CATALOG } from "@/lib/services";
 import { 
   Search, 
   MapPin, 
@@ -18,12 +20,39 @@ import NotificationCenter from "@/components/NotificationCenter";
 // Mock data to ensure the UI is rich and fully styled out of the box
 const MOCK_CATEGORIES = [
   { id: "all", name: "All Services", icon: Briefcase },
-  { id: "electrician", name: "Electrician", icon: CheckCircle },
-  { id: "plumber", name: "Plumber", icon: CheckCircle },
-  { id: "driver", name: "Driver", icon: CheckCircle },
-  { id: "welder", name: "Welder", icon: CheckCircle },
-  { id: "tailor", name: "Tailor", icon: CheckCircle },
+  ...SERVICE_CATALOG.map((service) => ({ ...service, icon: CheckCircle })),
 ];
+
+interface Worker {
+  id: string;
+  name: string;
+  primary_skill: string;
+  experience_years: number;
+  rating_average: number;
+  jobs_completed: number;
+  village: string;
+  block: string;
+  is_verified: boolean;
+  photo_url: string;
+}
+
+interface SupabaseWorkerRecord {
+  id: string;
+  photo_url: string | null;
+  experience_years: number | null;
+  rating_average: number | string | null;
+  jobs_completed: number | null;
+  profiles: {
+    name: string | null;
+    block: string | null;
+    village: string | null;
+  } | null;
+  worker_skills: Array<{
+    skills: {
+      name: string | null;
+    } | null;
+  }> | null;
+}
 
 const MOCK_WORKERS = [
   {
@@ -80,9 +109,72 @@ export default function LandingPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchSkill, setSearchSkill] = useState("");
   const [searchBlock, setSearchBlock] = useState("");
+  const [workers, setWorkers] = useState<Worker[]>(MOCK_WORKERS);
 
-  const filteredWorkers = MOCK_WORKERS.filter(worker => {
-    const matchesCategory = selectedCategory === "all" || worker.primary_skill.toLowerCase().includes(selectedCategory.toLowerCase());
+  useEffect(() => {
+    async function fetchWorkers() {
+      try {
+        const { data, error } = await supabase
+          .from("worker_profiles")
+          .select(`
+            id,
+            photo_url,
+            experience_years,
+            availability,
+            trust_score,
+            rating_average,
+            jobs_completed,
+            profiles:id (
+              name,
+              mobile,
+              district,
+              block,
+              village
+            ),
+            worker_skills (
+              skills (
+                name
+              )
+            )
+          `)
+          .eq("is_verified", true);
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const formattedWorkers = (data as unknown as SupabaseWorkerRecord[]).map((item) => {
+            const profile = item.profiles;
+            const primarySkill = item.worker_skills?.[0]?.skills?.name || "Skilled Professional";
+            return {
+              id: item.id,
+              name: profile?.name || "Unknown Worker",
+              primary_skill: primarySkill,
+              experience_years: item.experience_years || 0,
+              rating_average: Number(item.rating_average) || 0.00,
+              jobs_completed: item.jobs_completed || 0,
+              village: profile?.village || "N/A",
+              block: profile?.block || "N/A",
+              is_verified: true,
+              photo_url: item.photo_url || "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?w=150&auto=format&fit=crop&q=60"
+            };
+          });
+          setWorkers(formattedWorkers);
+        } else {
+          setWorkers(MOCK_WORKERS);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch workers from Supabase, falling back to mock data:", err);
+        setWorkers(MOCK_WORKERS);
+      }
+    }
+
+    fetchWorkers();
+  }, []);
+
+  const filteredWorkers = workers.filter(worker => {
+    const selectedService = SERVICE_CATALOG.find((service) => service.id === selectedCategory);
+    const matchesCategory = selectedCategory === "all"
+      || worker.primary_skill.toLowerCase() === selectedService?.name.toLowerCase();
     const matchesSkill = !searchSkill || worker.primary_skill.toLowerCase().includes(searchSkill.toLowerCase());
     const matchesBlock = !searchBlock || worker.block.toLowerCase().includes(searchBlock.toLowerCase());
     return matchesCategory && matchesSkill && matchesBlock;
@@ -325,8 +417,8 @@ export default function LandingPage() {
         <div className="flex items-center gap-6 text-xs text-muted font-semibold">
           <Link href="/login" className="hover:underline">Staff Login</Link>
           <Link href="/admin/verify" className="hover:underline">Verification Dashboard</Link>
-          <Link href="/" className="hover:underline">Privacy Policy</Link>
-          <Link href="/" className="hover:underline">Terms & Conditions</Link>
+          <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+          <Link href="/terms" className="hover:underline">Terms & Conditions</Link>
         </div>
       </footer>
 

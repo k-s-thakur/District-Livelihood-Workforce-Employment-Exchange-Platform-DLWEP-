@@ -4,6 +4,7 @@ import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Award, ArrowLeft, ShieldCheck, User, Hammer } from "lucide-react";
+import { SERVICE_CATALOG } from "@/lib/services";
 
 const DISTRICT_BLOCKS = {
   "Katni": ["Murwara (Katni)", "Bahoriband", "Rithi", "Barwara", "Vijayraghavgarh", "Badwara"]
@@ -17,19 +18,6 @@ const BLOCK_VILLAGES = {
   "Vijayraghavgarh": ["Bijeraghogarh", "Vijayraghavgarh", "Khalwara", "Kharhari"],
   "Badwara": ["Badwara", "Lakhakhera", "Kailwara", "Bujbuja"]
 };
-
-const SKILLS_LIST = [
-  { id: "1", name: "Electrician", category: "Electrical & Energy" },
-  { id: "2", name: "AC Repair & Installation", category: "Electrical & Energy" },
-  { id: "3", name: "Plumber", category: "Construction & Plumbing" },
-  { id: "4", name: "Mason (Bricklayer)", category: "Construction & Plumbing" },
-  { id: "5", name: "Welder", category: "Industrial & Fabrication" },
-  { id: "6", name: "Carpenter", category: "Woodworking & Furniture" },
-  { id: "7", name: "Automobile Driver", category: "Logistics & Transport" },
-  { id: "8", name: "Tractor Operator", category: "Logistics & Transport" },
-  { id: "9", name: "Tailor / Seamstress", category: "Apparel & Fashion" },
-  { id: "10", name: "General Home Cleaner", category: "Domestic Services" }
-];
 
 function RegisterForm() {
   const searchParams = useSearchParams();
@@ -201,6 +189,17 @@ function RegisterForm() {
             >
               {role === "worker" ? "Next Step" : "Submit Registration"}
             </button>
+            <p className="text-center text-[11px] leading-5 text-muted">
+              By continuing, you agree to the{" "}
+              <Link href="/terms" className="font-semibold text-blue-600 underline">
+                Terms & Conditions
+              </Link>{" "}
+              and acknowledge the{" "}
+              <Link href="/privacy" className="font-semibold text-blue-600 underline">
+                Privacy Policy
+              </Link>
+              .
+            </p>
           </form>
         </div>
       )}
@@ -216,7 +215,7 @@ function RegisterForm() {
             <div>
               <span className="text-xs font-bold text-ink uppercase tracking-wider mb-2 block">Choose Primary Skills</span>
               <div className="grid grid-cols-2 gap-2">
-                {SKILLS_LIST.map((skill) => {
+                {SERVICE_CATALOG.map((skill) => {
                   const isSelected = selectedSkills.includes(skill.name);
                   return (
                     <button

@@ -5,24 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Award, ArrowLeft, Wrench } from "lucide-react";
 import KatniVectorMap from "@/components/KatniVectorMap";
-
-const SKILLS_LIST = [
-  "Electrician",
-  "AC Repair & Installation",
-  "Plumber",
-  "Mason (Bricklayer)",
-  "Welder",
-  "Carpenter",
-  "Automobile Driver",
-  "Tractor Operator",
-  "Tailor / Seamstress",
-  "General Home Cleaner"
-];
+import { SERVICE_NAMES } from "@/lib/services";
 
 export default function NewRequestPage() {
   const router = useRouter();
   
-  const [skill, setSkill] = useState(SKILLS_LIST[0]);
+  const [skill, setSkill] = useState<string>(SERVICE_NAMES[0]);
   const [description, setDescription] = useState("");
   const [block, setBlock] = useState("Murwara (Katni)");
   const [village, setVillage] = useState("Kuthla");
@@ -89,7 +77,7 @@ export default function NewRequestPage() {
                     onChange={(e) => setSkill(e.target.value)}
                     className="text-input-field appearance-none bg-canvas"
                   >
-                    {SKILLS_LIST.map((s) => (
+                    {SERVICE_NAMES.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>

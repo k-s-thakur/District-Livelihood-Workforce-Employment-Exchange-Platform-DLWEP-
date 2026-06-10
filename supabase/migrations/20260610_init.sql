@@ -209,12 +209,22 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
 INSERT INTO public.skills (name, category) VALUES
   ('Electrician', 'Electrical & Energy'),
   ('AC Repair & Installation', 'Electrical & Energy'),
+  ('Solar Technician', 'Electrical & Energy'),
   ('Plumber', 'Construction & Plumbing'),
   ('Mason (Bricklayer)', 'Construction & Plumbing'),
+  ('Painter', 'Construction & Finishing'),
+  ('Tile Installer', 'Construction & Finishing'),
   ('Welder', 'Industrial & Fabrication'),
   ('Carpenter', 'Woodworking & Furniture'),
+  ('Appliance Repair Technician', 'Repair & Maintenance'),
   ('Automobile Driver', 'Logistics & Transport'),
   ('Tractor Operator', 'Logistics & Transport'),
+  ('Two-Wheeler Mechanic', 'Automotive Services'),
+  ('Auto Mechanic', 'Automotive Services'),
   ('Tailor / Seamstress', 'Apparel & Fashion'),
-  ('General Home Cleaner', 'Domestic Services')
+  ('General Home Cleaner', 'Domestic Services'),
+  ('Cook', 'Domestic Services'),
+  ('Gardener', 'Outdoor Services'),
+  ('Security Guard', 'Security Services'),
+  ('Pest Control Technician', 'Health & Sanitation')
 ON CONFLICT (name) DO NOTHING;
